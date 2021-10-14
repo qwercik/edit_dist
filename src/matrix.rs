@@ -1,4 +1,5 @@
 use std::ops::{Index, IndexMut};
+use std::fmt;
 
 pub type Selector = (usize, usize);
 
@@ -73,6 +74,22 @@ where T: Default + Clone
     }
 }
 
+impl<T> fmt::Display for Matrix<T>
+where T: Default + Clone + fmt::Display
+{
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        for y in 0..self.height() {
+            for x in 0..self.width() - 1 {
+                write!(f, "{} ", self[(y, x)])?;
+            }
+            write!(f, "{}\n", self[(y, self.width() - 1)])?;
+        }
+
+        Ok(())
+    }
+}
+
+
 #[cfg(test)]
 mod test {
     use super::*;
@@ -102,11 +119,11 @@ mod test {
     #[test]
     fn test_get_mut() {
         let mut matrix = Matrix::new(3, 3);
-        if let Some(reference) = matrix.get_mut((1, 1)) {
+        if let Some(reference) = matrix.get_mut((1, 0)) {
             *reference = 112;
         }
 
-        assert_eq!(matrix.get((1, 1)), Some(112).as_ref());
+        assert_eq!(matrix.get((1, 0)), Some(112).as_ref());
     }
 
     #[test]
