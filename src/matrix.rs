@@ -1,22 +1,23 @@
-use std::ops::{Index, IndexMut};
 use std::fmt;
+use std::ops::{Index, IndexMut};
 
 pub type Selector = (usize, usize);
 
 pub struct Matrix<T> {
     data: Vec<T>,
     width: usize,
-    height: usize
+    height: usize,
 }
 
-impl<T> Matrix<T> 
-where T: Default + Clone
+impl<T> Matrix<T>
+where
+    T: Default + Clone,
 {
     pub fn new(width: usize, height: usize) -> Self {
         Matrix {
             data: vec![T::default(); width * height],
             width,
-            height
+            height,
         }
     }
 
@@ -34,14 +35,14 @@ where T: Default + Clone
     pub fn get(&self, selector: Selector) -> Option<&T> {
         match self.get_index(selector) {
             Some(index) => self.data.get(index),
-            None => None
+            None => None,
         }
     }
 
     pub fn get_mut(&mut self, selector: Selector) -> Option<&mut T> {
         match self.get_index(selector) {
             Some(index) => self.data.get_mut(index),
-            None => None
+            None => None,
         }
     }
 
@@ -54,41 +55,43 @@ where T: Default + Clone
     }
 }
 
-impl<T>Index<Selector> for Matrix<T>
-where T: Default + Clone 
+impl<T> Index<Selector> for Matrix<T>
+where
+    T: Default + Clone,
 {
     type Output = T;
 
     fn index(&self, selector: Selector) -> &Self::Output {
         self.get(selector)
-            .expect(&format!("Invalid index ({}, {})", selector.0, selector.1))
+            .unwrap_or_else(|| panic!("Invalid index ({}, {})", selector.0, selector.1))
     }
 }
 
 impl<T> IndexMut<Selector> for Matrix<T>
-where T: Default + Clone
+where
+    T: Default + Clone,
 {
     fn index_mut(&mut self, selector: Selector) -> &mut Self::Output {
         self.get_mut(selector)
-            .expect(&format!("Invalid index ({}, {})", selector.0, selector.1))
+            .unwrap_or_else(|| panic!("Invalid index ({}, {})", selector.0, selector.1))
     }
 }
 
 impl<T> fmt::Display for Matrix<T>
-where T: Default + Clone + fmt::Display
+where
+    T: Default + Clone + fmt::Display,
 {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         for y in 0..self.height() {
             for x in 0..self.width() - 1 {
                 write!(f, "{} ", self[(y, x)])?;
             }
-            write!(f, "{}\n", self[(y, self.width() - 1)])?;
+            writeln!(f, "{}", self[(y, self.width() - 1)])?;
         }
 
         Ok(())
     }
 }
-
 
 #[cfg(test)]
 mod test {

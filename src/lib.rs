@@ -2,7 +2,13 @@ mod matrix;
 
 use matrix::Matrix;
 
-pub fn distance<T: PartialEq>(first_word: &[T], second_word: &[T]) -> usize {
+pub fn levenshtein<T: PartialEq>(
+    first_word: impl Iterator<Item = T>,
+    second_word: impl Iterator<Item = T>,
+) -> usize {
+    let first_word: Vec<T> = first_word.collect();
+    let second_word: Vec<T> = second_word.collect();
+
     let mut matrix = Matrix::<usize>::new(first_word.len() + 1, second_word.len() + 1);
     for y in 0..matrix.height() {
         matrix[(y, 0)] = y;
@@ -10,7 +16,7 @@ pub fn distance<T: PartialEq>(first_word: &[T], second_word: &[T]) -> usize {
     for x in 0..matrix.width() {
         matrix[(0, x)] = x;
     }
-    
+
     for y in 1..matrix.height() {
         for x in 1..matrix.width() {
             let the_same_letter = first_word[x - 1] == second_word[y - 1];
@@ -21,7 +27,7 @@ pub fn distance<T: PartialEq>(first_word: &[T], second_word: &[T]) -> usize {
                 matrix[(y - 1, x)] + 1,
                 matrix[(y, x - 1)] + 1,
             ];
-            
+
             matrix[(y, x)] = values.into_iter().min().unwrap();
         }
     }
@@ -35,22 +41,22 @@ mod tests {
 
     #[test]
     fn distance_test_1() {
-        let a = "sitting".chars().collect::<Vec<char>>();
-        let b = "kitten".chars().collect::<Vec<char>>();
-        assert_eq!(distance(&a, &b), 3);
+        let a = "sitting".chars();
+        let b = "kitten".chars();
+        assert_eq!(levenshtein(a, b), 3);
     }
 
     #[test]
     fn distance_test_2() {
-        let a = "honda".chars().collect::<Vec<char>>();
-        let b = "hyundai".chars().collect::<Vec<char>>();
-        assert_eq!(distance(&a, &b), 3);
+        let a = "honda".chars();
+        let b = "hyundai".chars();
+        assert_eq!(levenshtein(a, b), 3);
     }
 
     #[test]
     fn distance_test_3() {
-        let a = "gily".chars().collect::<Vec<char>>();
-        let b = "geely".chars().collect::<Vec<char>>();
-        assert_eq!(distance(&a, &b), 2);
+        let a = "gily".chars();
+        let b = "geely".chars();
+        assert_eq!(levenshtein(a, b), 2);
     }
 }
