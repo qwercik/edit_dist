@@ -1,7 +1,12 @@
 [package]
 name = "edit_dist"
+description = "Small library for calculating edit distances (e.g. Levenshtein distance)"
+homepage = "https://github.com/qwercik/edit_dist"
+repository = "https://github.com/qwercik/edit_dist"
 version = "0.1.0"
 edition = "2018"
+license = "MIT"
+readme = "README.md"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 

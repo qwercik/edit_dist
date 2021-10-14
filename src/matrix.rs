@@ -1,8 +1,10 @@
 use std::fmt;
 use std::ops::{Index, IndexMut};
 
+/// Type being used for selecting cells from a matrix
 pub type Selector = (usize, usize);
 
+/// 2D matrix with given size of T-typed elements
 pub struct Matrix<T> {
     data: Vec<T>,
     width: usize,
@@ -13,6 +15,16 @@ impl<T> Matrix<T>
 where
     T: Default + Clone,
 {
+    /// Create a new instance of Matrix, with given size
+    /// 
+    /// # Arguments
+    /// * `width` - Width of a matrix
+    /// * `height` - Height of a matrix
+    /// 
+    /// # Examples
+    /// ```
+    /// let matrix = Matrix::new(3, 7);
+    /// ```
     pub fn new(width: usize, height: usize) -> Self {
         Matrix {
             data: vec![T::default(); width * height],
@@ -21,6 +33,15 @@ where
         }
     }
 
+    /// Get raw 1D index for current matrix and given selector
+    /// 
+    /// # Arguments
+    /// * `selector` - Selector to the specific cell
+    /// 
+    /// # Examples
+    /// ```
+    /// let idx = self.get_index((2, 3));
+    /// ```
     fn get_index(&self, selector: Selector) -> Option<usize> {
         let (y, x) = selector;
         let index = y * self.width + x;
@@ -32,6 +53,24 @@ where
         }
     }
 
+    /// Get read-only reference to the specific cell
+    /// 
+    /// # Arguments
+    /// * `selector` - Selector to the specific cell
+    /// 
+    /// # Examples
+    /// ```
+    /// let matrix = Matrix::new(7, 3);
+    /// // ...
+    /// match matrix.get((4, 2)) {
+    ///     Ok(reference) => {
+    ///         // ...
+    ///     },
+    ///     None => {
+    ///         /// ...
+    ///     }
+    /// }
+    /// ```
     pub fn get(&self, selector: Selector) -> Option<&T> {
         match self.get_index(selector) {
             Some(index) => self.data.get(index),
@@ -39,6 +78,24 @@ where
         }
     }
 
+    /// Get a mutable reference to the specific cell
+    /// 
+    /// # Arguments
+    /// * `selector` - Selector to the specific cell
+    /// 
+    /// # Examples
+    /// ```
+    /// let mut matrix = Matrix::new(7, 3);
+    /// // ...
+    /// match matrix.get_mut((4, 2)) {
+    ///     Ok(reference) => {
+    ///         // ...
+    ///     },
+    ///     None => {
+    ///         /// ...
+    ///     }
+    /// }
+    /// ```
     pub fn get_mut(&mut self, selector: Selector) -> Option<&mut T> {
         match self.get_index(selector) {
             Some(index) => self.data.get_mut(index),
@@ -46,10 +103,12 @@ where
         }
     }
 
+    /// Get width of a matrix
     pub fn width(&self) -> usize {
         self.width
     }
 
+    /// Get height of a matrix
     pub fn height(&self) -> usize {
         self.height
     }
@@ -61,6 +120,17 @@ where
 {
     type Output = T;
 
+    /// Return read-only reference to the specific cell or panic in case of error
+    /// 
+    /// # Arguments
+    /// * `selector` - Selector of the specific cell
+    /// 
+    /// # Examples
+    /// ```
+    /// let matrix = Matrix::new(3, 7);
+    /// // ...
+    /// let value = matrix[(0, 0)]
+    /// ```
     fn index(&self, selector: Selector) -> &Self::Output {
         self.get(selector)
             .unwrap_or_else(|| panic!("Invalid index ({}, {})", selector.0, selector.1))
@@ -71,6 +141,17 @@ impl<T> IndexMut<Selector> for Matrix<T>
 where
     T: Default + Clone,
 {
+    /// Return read-only reference to the specific cell or panic in case of error
+    /// 
+    /// # Arguments
+    /// * `selector` - Selector of the specific cell
+    /// 
+    /// # Examples
+    /// ```
+    /// let matrix = Matrix::new(3, 7);
+    /// // ...
+    /// let value = matrix[(0, 0)]
+    /// ```
     fn index_mut(&mut self, selector: Selector) -> &mut Self::Output {
         self.get_mut(selector)
             .unwrap_or_else(|| panic!("Invalid index ({}, {})", selector.0, selector.1))
@@ -81,6 +162,7 @@ impl<T> fmt::Display for Matrix<T>
 where
     T: Default + Clone + fmt::Display,
 {
+    /// Implement displaying a matrix
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         for y in 0..self.height() {
             for x in 0..self.width() - 1 {

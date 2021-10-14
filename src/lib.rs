@@ -2,6 +2,20 @@ mod matrix;
 
 use matrix::Matrix;
 
+/// Calculate Levenshtein distance for two words
+/// 
+/// # Arguments
+/// * `first_word` - First word
+/// * `second_word` - Second word
+/// 
+/// # Examples
+/// ```
+/// use edit_distance::levenshtein;
+/// let dist = levenshtein(
+///     "lorem".char(),
+///     "ipsum".char()
+/// );
+/// ```
 pub fn levenshtein<T: PartialEq>(
     first_word: impl Iterator<Item = T>,
     second_word: impl Iterator<Item = T>,
