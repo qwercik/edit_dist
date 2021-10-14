@@ -1,5 +1,5 @@
 [package]
-name = "edit_distance"
+name = "edit_dist"
 version = "0.1.0"
 edition = "2018"
 
