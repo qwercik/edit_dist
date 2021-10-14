@@ -16,11 +16,11 @@ where
     T: Default + Clone,
 {
     /// Create a new instance of Matrix, with given size
-    /// 
+    ///
     /// # Arguments
     /// * `width` - Width of a matrix
     /// * `height` - Height of a matrix
-    /// 
+    ///
     /// # Examples
     /// ```
     /// let matrix = Matrix::new(3, 7);
@@ -34,10 +34,10 @@ where
     }
 
     /// Get raw 1D index for current matrix and given selector
-    /// 
+    ///
     /// # Arguments
     /// * `selector` - Selector to the specific cell
-    /// 
+    ///
     /// # Examples
     /// ```
     /// let idx = self.get_index((2, 3));
@@ -54,10 +54,10 @@ where
     }
 
     /// Get read-only reference to the specific cell
-    /// 
+    ///
     /// # Arguments
     /// * `selector` - Selector to the specific cell
-    /// 
+    ///
     /// # Examples
     /// ```
     /// let matrix = Matrix::new(7, 3);
@@ -79,10 +79,10 @@ where
     }
 
     /// Get a mutable reference to the specific cell
-    /// 
+    ///
     /// # Arguments
     /// * `selector` - Selector to the specific cell
-    /// 
+    ///
     /// # Examples
     /// ```
     /// let mut matrix = Matrix::new(7, 3);
@@ -121,10 +121,10 @@ where
     type Output = T;
 
     /// Return read-only reference to the specific cell or panic in case of error
-    /// 
+    ///
     /// # Arguments
     /// * `selector` - Selector of the specific cell
-    /// 
+    ///
     /// # Examples
     /// ```
     /// let matrix = Matrix::new(3, 7);
@@ -142,10 +142,10 @@ where
     T: Default + Clone,
 {
     /// Return read-only reference to the specific cell or panic in case of error
-    /// 
+    ///
     /// # Arguments
     /// * `selector` - Selector of the specific cell
-    /// 
+    ///
     /// # Examples
     /// ```
     /// let matrix = Matrix::new(3, 7);

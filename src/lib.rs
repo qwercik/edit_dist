@@ -3,11 +3,11 @@ mod matrix;
 use matrix::Matrix;
 
 /// Calculate Levenshtein distance for two words
-/// 
+///
 /// # Arguments
 /// * `first_word` - First word
 /// * `second_word` - Second word
-/// 
+///
 /// # Examples
 /// ```
 /// use edit_distance::levenshtein;
